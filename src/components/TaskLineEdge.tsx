@@ -39,6 +39,7 @@ export default function TaskLineEdge({
   const [hover, setHover] = useState(false);
 
   const mainTaskId = (data as { mainTaskId?: string } | undefined)?.mainTaskId;
+  const strokeColor = typeof style?.stroke === 'string' ? style.stroke : 'rgba(104,216,255,0.7)';
 
   return (
     <>
@@ -46,7 +47,7 @@ export default function TaskLineEdge({
       <BaseEdge
         id={id}
         path={edgePath}
-        style={{ ...style, filter: 'drop-shadow(0 0 3px rgba(57,255,106,0.08))' }}
+        style={{ ...style, filter: `drop-shadow(0 0 4px ${strokeColor})` }}
         markerEnd={markerEnd}
       />
 
@@ -67,6 +68,7 @@ export default function TaskLineEdge({
       {editMode && hover && mainTaskId && (
         <EdgeLabelRenderer>
           <button
+            className="danger-button"
             onClick={() => deleteMainTask(mainTaskId)}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
@@ -76,15 +78,10 @@ export default function TaskLineEdge({
               transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
               pointerEvents: 'all',
               padding: '4px 10px',
-              borderRadius: 8,
-              border: 'none',
-              background: 'rgba(255,80,80,0.92)',
-              color: '#fff',
               fontSize: 12,
               fontWeight: 600,
               cursor: 'pointer',
               whiteSpace: 'nowrap',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
             }}
           >
             删除主线

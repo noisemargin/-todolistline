@@ -4,6 +4,9 @@
 /** 每个日期之间的横向像素间距。让每天形成足够宽的"格子",卡片不拥挤。 */
 export const DAY_WIDTH = 260;
 
+/** 日期线之间允许压缩到的最小距离,防止时间顺序被拖乱。 */
+export const MIN_DAY_WIDTH = 96;
+
 /** 时间轴竖线的高度(像素)。先给一个足够大的值。 */
 export const TIMELINE_HEIGHT = 2000;
 
@@ -43,6 +46,48 @@ export function buildDates(start: Date, count: number): Date[] {
     dates.push(addDays(start, i));
   }
   return dates;
+}
+
+/** 生成默认日期间距。第 i 项表示 day i 和 day i+1 之间的距离。 */
+export function buildDayGaps(totalDays: number): number[] {
+  return Array.from({ length: Math.max(0, totalDays - 1) }, () => DAY_WIDTH);
+}
+
+/** 补齐/清洗已保存的日期间距,兼容旧数据。 */
+export function normalizeDayGaps(gaps: unknown, totalDays: number): number[] {
+  const fallback = buildDayGaps(totalDays);
+  if (!Array.isArray(gaps)) return fallback;
+  return fallback.map((defaultGap, index) => {
+    const gap = gaps[index];
+    return typeof gap === 'number' && Number.isFinite(gap)
+      ? Math.max(MIN_DAY_WIDTH, gap)
+      : defaultGap;
+  });
+}
+
+/** 根据可变间距计算某一天日期线的 x 坐标。 */
+export function xForDayIndex(dayIndex: number, gaps: number[]): number {
+  let x = 0;
+  for (let i = 0; i < dayIndex; i++) x += gaps[i] ?? DAY_WIDTH;
+  return x;
+}
+
+/** 根据画布 x 坐标找到最近的日期。 */
+export function nearestDayFromX(x: number, gaps: number[], totalDays: number): number {
+  let nearest = 0;
+  let nearestDistance = Infinity;
+  let cursor = 0;
+
+  for (let i = 0; i < totalDays; i++) {
+    const distance = Math.abs(x - cursor);
+    if (distance < nearestDistance) {
+      nearest = i;
+      nearestDistance = distance;
+    }
+    cursor += gaps[i] ?? DAY_WIDTH;
+  }
+
+  return nearest;
 }
 
 /** 把日期格式化成 "6/30" 这种简短形式。 */

@@ -18,11 +18,12 @@ import {
   START_OFFSET,
   diffDays,
   dayFromToday,
+  xForDayIndex,
 } from '../lib/dates';
 
 const START_DATE = dayFromToday(START_OFFSET);
 const CARD_OFFSET = (DAY_WIDTH - CARD_WIDTH) / 2;
-const CARD_H = 46; // 卡片大致高度,用于命中判断
+const CARD_H = 58; // 卡片大致高度,用于命中判断
 
 type ScreenRect = { x: number; y: number; w: number; h: number };
 
@@ -35,11 +36,12 @@ export default function SelectionLayer() {
   const startClient = useRef<{ x: number; y: number } | null>(null);
 
   // 计算某卡片在画布(flow)坐标系里的矩形
-  const cardFlowRect = useCallback((task: { date: number; mainTaskId: string; y?: number }) => {
+  const cardFlowRect = useCallback((task: { date: number; mainTaskId: string; x?: number; y?: number }) => {
     const { mainTasks } = useTaskStore.getState();
+    const { dayGaps } = useTaskStore.getState();
     const mainIndex = mainTasks.findIndex((m) => m.id === task.mainTaskId);
     const dayIndex = diffDays(START_DATE, new Date(task.date));
-    const x = dayIndex * DAY_WIDTH + CARD_OFFSET;
+    const x = task.x ?? (xForDayIndex(dayIndex, dayGaps) + CARD_OFFSET);
     const y = task.y ?? (ROW_START_Y + Math.max(0, mainIndex) * ROW_HEIGHT);
     return { left: x, right: x + CARD_WIDTH, top: y, bottom: y + CARD_H };
   }, []);
@@ -137,8 +139,9 @@ export default function SelectionLayer() {
 
       const { selectedIds, clearSelection: clear } = useUIStore.getState();
       if (selectedIds.length === 0) return;
-      const { deleteSubTask } = useTaskStore.getState();
-      selectedIds.forEach((id) => deleteSubTask(id));
+      e.preventDefault();
+      const { deleteSubTasks } = useTaskStore.getState();
+      deleteSubTasks(selectedIds);
       clear();
     };
     window.addEventListener('keydown', onKey);
@@ -156,7 +159,7 @@ export default function SelectionLayer() {
         width: rect.w,
         height: rect.h,
         border: '1px solid var(--accent)',
-        background: 'rgba(57,255,106,0.08)',
+        background: 'var(--accent-soft)',
         pointerEvents: 'none',
         zIndex: 9999,
       }}

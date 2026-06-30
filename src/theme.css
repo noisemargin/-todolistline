@@ -1,15 +1,59 @@
-/* ===== 主题设计 Token(深色 + 亮绿)=====
-   所有颜色集中在这里,改一处全局生效。对应 PRD 第 5 节。 */
+/* ===== 主题设计 Token:夜航图 =====
+   视觉关键词:深墨蓝画布、青蓝坐标网格、暖琥珀定位灯。 */
 :root {
-  --bg-canvas:    #0E0F12;   /* 画布背景(深) */
-  --bg-card:      #1A1C20;   /* 卡片背景 */
-  --bg-dots:      #16181D;   /* 画布底纹点 */
-  --line-date:    #343840;   /* 普通日期竖线(弱化灰) */
-  --line-today:   #BCC0C8;   /* 今天高亮(近白灰,突出但不刺眼) */
-  --accent:       #39FF6A;   /* 主题亮绿 */
-  --text-primary: #E8EAED;   /* 主文字 */
-  --text-muted:   #8A8F98;   /* 次要文字 */
-  --task-line:    #39FF6A;   /* 主线串联曲线 */
+  --bg-canvas:    #07111C;
+  --bg-card:      #101D2A;
+  --bg-dots:      rgba(103, 138, 169, 0.22);
+  --line-date:    rgba(83, 112, 140, 0.34);
+  --line-today:   #FFB84A;
+  --accent:       #68D8FF;
+  --accent-soft:  rgba(104, 216, 255, 0.13);
+  --accent-dim:   rgba(104, 216, 255, 0.42);
+  --signal:       #FFB84A;
+  --signal-text:  #1B1205;
+  --signal-soft:  rgba(255, 184, 74, 0.16);
+  --text-primary: #EAF6FF;
+  --text-muted:   #9EB2C5;
+  --text-faint:   #5F768B;
+  --task-line:    #68D8FF;
+  --panel-bg:     rgba(7, 17, 28, 0.78);
+  --panel-border: rgba(142, 190, 225, 0.18);
+  --panel-shadow: 0 18px 42px rgba(0, 7, 15, 0.44);
+  --card-shadow:  0 16px 34px rgba(0, 9, 18, 0.32);
+  --card-surface: rgba(8,18,30,0.78);
+  --card-done-bg: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.055));
+  --card-divider: rgba(255,255,255,.28);
+  --radius-sm:    7px;
+  --radius-md:    9px;
+  --radius-lg:    12px;
+  --font-display: "Bahnschrift", "DIN Condensed", "Arial Narrow", "Microsoft YaHei", sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-data: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+:root[data-theme="light"] {
+  --bg-canvas:    #F6F8FB;
+  --bg-card:      #FFFFFF;
+  --bg-dots:      rgba(69, 111, 154, 0.18);
+  --line-date:    rgba(119, 143, 169, 0.24);
+  --line-today:   #F59E0B;
+  --accent:       #2F80ED;
+  --accent-soft:  rgba(47, 128, 237, 0.10);
+  --accent-dim:   rgba(47, 128, 237, 0.36);
+  --signal:       #2F80ED;
+  --signal-text:  #FFFFFF;
+  --signal-soft:  rgba(245, 158, 11, 0.14);
+  --text-primary: #111827;
+  --text-muted:   #526170;
+  --text-faint:   #8A96A3;
+  --task-line:    #2F80ED;
+  --panel-bg:     rgba(255, 255, 255, 0.88);
+  --panel-border: rgba(35, 54, 74, 0.10);
+  --panel-shadow: 0 14px 34px rgba(31, 45, 61, 0.10);
+  --card-shadow:  0 10px 28px rgba(31, 45, 61, 0.12);
+  --card-surface: rgba(255,255,255,0.86);
+  --card-done-bg: linear-gradient(180deg, rgba(243,246,250,0.95), rgba(255,255,255,0.88));
+  --card-divider: rgba(31,45,61,.18);
 }
 
 * { box-sizing: border-box; }
@@ -22,9 +66,260 @@ html, body, #root {
 }
 
 body {
-  background: var(--bg-canvas);
+  background:
+    radial-gradient(circle at 16% 8%, rgba(104,216,255,0.12), transparent 24%),
+    radial-gradient(circle at 82% 14%, rgba(255,184,74,0.08), transparent 22%),
+    linear-gradient(180deg, #0B1A29 0%, var(--bg-canvas) 52%, #050A11 100%);
   color: var(--text-primary);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto,
-    "PingFang SC", "Microsoft YaHei", sans-serif;
-  overflow: hidden; /* 画布自己管滚动,页面不出现滚动条 */
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+:root[data-theme="light"] body {
+  background:
+    radial-gradient(circle at 10% 4%, rgba(47,128,237,0.10), transparent 24%),
+    linear-gradient(180deg, #E9EDF3 0%, var(--bg-canvas) 24%, #FFFFFF 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(104,216,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(104,216,255,0.035) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.65), transparent 78%);
+}
+
+:root[data-theme="light"] body::before {
+  background:
+    linear-gradient(rgba(72, 100, 130, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(72, 100, 130, 0.055) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.48), transparent 82%);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+.glass-panel {
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  box-shadow: var(--panel-shadow);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.hud-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.hud-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-top: 1px solid rgba(255,255,255,0.13);
+  background: linear-gradient(135deg, rgba(104,216,255,0.12), transparent 34%);
+}
+
+:root[data-theme="light"] .hud-panel::before {
+  border-top-color: rgba(255,255,255,0.9);
+  background: linear-gradient(135deg, rgba(47,128,237,0.08), transparent 42%);
+}
+
+.toolbar-button {
+  min-height: 32px;
+  padding: 7px 12px 8px;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  background: rgba(104,216,255,0.055);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.toolbar-button:hover {
+  border-color: var(--accent-dim);
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(104,216,255,0.06);
+}
+
+.toolbar-button:disabled {
+  cursor: not-allowed;
+  opacity: .42;
+  transform: none;
+}
+
+.toolbar-button:disabled:hover {
+  border-color: var(--panel-border);
+  background: rgba(104,216,255,0.055);
+  color: var(--text-muted);
+  box-shadow: none;
+}
+
+.primary-button {
+  min-height: 36px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255,184,74,0.45);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--signal) 82%, white), var(--signal));
+  color: var(--signal-text);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  cursor: pointer;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--signal) 18%, transparent);
+}
+
+.primary-button:hover {
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--signal) 26%, transparent);
+}
+
+.danger-button {
+  border: 1px solid rgba(255, 105, 105, 0.35);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 78, 78, 0.88);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(255, 78, 78, 0.18);
+}
+
+.danger-button:hover {
+  background: rgba(255, 96, 96, 0.96);
+}
+
+.text-input {
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.055);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.text-input::placeholder {
+  color: var(--text-faint);
+}
+
+.text-input:focus {
+  border-color: var(--accent-dim);
+  background: rgba(255,255,255,0.075);
+  box-shadow: 0 0 0 3px rgba(104,216,255,0.08);
+}
+
+.react-flow {
+  background: transparent;
+}
+
+.react-flow__attribution {
+  background: rgba(7, 17, 28, 0.66) !important;
+  color: var(--text-faint) !important;
+  border-radius: 8px 0 0 0;
+}
+
+:root[data-theme="light"] .react-flow__attribution {
+  background: rgba(255,255,255,0.76) !important;
+}
+
+.month-chip {
+  min-width: 118px;
+  padding: 8px 12px;
+  font-family: var(--font-data);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.mission-panel {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 10px;
+  padding: 9px 11px;
+}
+
+.mission-stat {
+  min-width: 52px;
+  border-left: 1px solid var(--panel-border);
+  padding-left: 10px;
+}
+
+.mission-stat:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.mission-label {
+  color: var(--text-faint);
+  font-family: var(--font-data);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.mission-value {
+  margin-top: 2px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* ===== 视觉打磨:卡片过渡动画 ===== */
+.react-flow__node-card {
+  transition: filter .25s ease, transform .25s ease;
+}
+.react-flow__node-card:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.card-node::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 5px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--card-divider), transparent);
+  opacity: .22;
+}
+
+/* ===== 今日日期线微光 ===== */
+/* DateLineNode 的竖线容器如果带 today 类,给它一层微弱光晕 */
+.today-glow {
+  box-shadow: 0 0 22px rgba(255,184,74,0.42);
+}
+
+/* ===== 选中态过渡 ===== */
+.react-flow__node-card [style*="outline"] {
+  transition: outline .15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

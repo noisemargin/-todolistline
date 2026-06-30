@@ -33,6 +33,7 @@ export default function CreateMainBar() {
 
   return (
     <div
+      className="glass-panel"
       style={{
         position: 'fixed',
         bottom: 20,
@@ -42,47 +43,31 @@ export default function CreateMainBar() {
         display: 'flex',
         gap: 8,
         alignItems: 'center',
-        padding: '10px 16px',
-        borderRadius: 12,
-        background: 'rgba(14,15,18,0.95)',
-        border: '1px solid var(--line-date)',
-        backdropFilter: 'blur(8px)',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+        padding: '10px',
       }}
     >
       <input
+        className="text-input"
         ref={inputRef}
         type="text"
-        placeholder="输入主线任务名称…"
+        placeholder="新的任务主线…"
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         style={{
           width: 220,
           padding: '8px 12px',
-          borderRadius: 8,
-          border: '1px solid var(--line-date)',
-          background: 'rgba(255,255,255,0.05)',
-          color: 'var(--text-primary)',
           fontSize: 14,
-          outline: 'none',
         }}
       />
       <button
+        className="primary-button"
         onClick={submit}
         style={{
-          padding: '8px 18px',
-          borderRadius: 8,
-          border: 'none',
-          background: 'var(--accent)',
-          color: '#0E0F12',
           fontSize: 14,
-          fontWeight: 700,
-          cursor: 'pointer',
-          whiteSpace: 'nowrap',
         }}
       >
-        新增
+        添加主线
       </button>
     </div>
   );
