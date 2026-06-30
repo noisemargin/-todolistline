@@ -1,0 +1,30 @@
+/* ===== 主题设计 Token(深色 + 亮绿)=====
+   所有颜色集中在这里,改一处全局生效。对应 PRD 第 5 节。 */
+:root {
+  --bg-canvas:    #0E0F12;   /* 画布背景(深) */
+  --bg-card:      #1A1C20;   /* 卡片背景 */
+  --bg-dots:      #16181D;   /* 画布底纹点 */
+  --line-date:    #343840;   /* 普通日期竖线(弱化灰) */
+  --line-today:   #BCC0C8;   /* 今天高亮(近白灰,突出但不刺眼) */
+  --accent:       #39FF6A;   /* 主题亮绿 */
+  --text-primary: #E8EAED;   /* 主文字 */
+  --text-muted:   #8A8F98;   /* 次要文字 */
+  --task-line:    #39FF6A;   /* 主线串联曲线 */
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+  overflow: hidden; /* 画布自己管滚动,页面不出现滚动条 */
+}
